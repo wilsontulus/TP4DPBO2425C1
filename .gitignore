@@ -40,6 +40,7 @@ bld/
 [Ll]ogs/
 **/[Bb]in/
 **/[Bb]uild/
+**/[Oo]ut/
 
 
 # Visual Studio History (VSHistory) files
@@ -56,7 +57,3 @@ bld/
 
 # Local History for Visual Studio Code
 .history/
-
-# IntelliJ IDEA files
-**/.idea/
-.idea/*
