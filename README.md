@@ -8,11 +8,19 @@ Saya Willsoon Tulus Parluhutan Simanjuntak dengan NIM 2404756 mengerjakan evalua
 
 Aamiin.
 
-## Penjelasan Desain program
+## Desain program
+
+Diagram UML:
 
 ![UML Diagram](Dokumentasi/uml_diagram.svg)
 
+Desain Swing GUI:
+
+![Desain Swing GUI](Dokumentasi/gui_design.png)
+
 ## Penjelasan Alur jalan program
+
+Program ini menggunakan Swing UI sebagai antarmuka pengoperasiannya, dan diawali dengan berbagai data dummy yang telah terisi sejak program dijalankan.
 
 ## Preview operasional program
 

@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,16 +15,13 @@ public class ProductMenu extends JFrame {
         ProductMenu menu = new ProductMenu();
 
         // Set ukuran window
-        menu.setSize(700, 600);
+        menu.setSize(700, 650);
 
         // Letakkan window di tengah layar
         menu.setLocationRelativeTo(null);
 
         // Isikan window
         menu.setContentPane(menu.mainPanel);
-
-        // Ubah warna background
-        menu.getContentPane().setBackground(Color.WHITE);
 
         // Tampilkan window
         menu.setVisible(true);
@@ -47,29 +46,49 @@ public class ProductMenu extends JFrame {
     private JButton cancelButton;
     private JComboBox<String> kategoriComboBox;
     private JButton deleteButton;
+    private JSlider kelasSlider;
     private JLabel titleLabel;
     private JLabel idLabel;
     private JLabel namaLabel;
     private JLabel hargaLabel;
     private JLabel kategoriLabel;
+    private JLabel kelasLabel;
+    private JLabel kelasSliderIndicator;
 
     // Deklarasi constructor
     public ProductMenu() {
         // inisialisasi listProduct
         listProduct = new ArrayList<>();
 
-        // isi listProduct
+        // Isi listProduct
         populateList();
 
-        // isi tabel produk
+        // Isi tabel produk
         productTable.setModel(setTable());
 
-        // ubah styling title
+        // Ubah styling title
         titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 20f));
 
-        // atur isi combo box
-        String[] kategoriData = {"???", "Elektronik", "Makanan", "Minuman", "Pakaian", "Alat Tulis"};
+        // Atur isi combo box
+        String[] kategoriData = {"<Pilih kategori>", "Laptop", "PC", "Peripheral", "Aksesoris", "Penyimpanan"};
         kategoriComboBox.setModel(new DefaultComboBoxModel<>(kategoriData));
+
+        // Atur posisi slider
+        String[] kelasData = {"Low-end", "Mid-range", "High-end"};
+        kelasSlider.setValue(1);
+
+        // Tampilkan indikator pada slider
+        kelasSlider.setPaintTicks(true);
+        kelasSlider.setMajorTickSpacing(3);
+        kelasSlider.setMinorTickSpacing(1);
+
+        // Buat listener untuk slider
+        kelasSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent changeEvent) {
+                kelasSliderIndicator.setText(kelasData[kelasSlider.getValue()]);
+            }
+        });
 
         // sembunyikan button delete
         deleteButton.setVisible(false);
@@ -91,7 +110,7 @@ public class ProductMenu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Tampilkan pop-up konfirmasi penghapusan data (variabel integer)
                 int confirmResult = JOptionPane.showConfirmDialog(null, "Apakah Anda yakin untuk menghapus data?",
-                        "Konfirmasi Hapus Data", JOptionPane.YES_NO_OPTION);
+                        "Konfirmasi Hapus Data", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
                 // jika variabel confirmResult 0, berarti pengguna mengklik Yes (1 berarti No)
                 if (confirmResult == 0) {
@@ -118,12 +137,19 @@ public class ProductMenu extends JFrame {
                 String curNama = productTable.getModel().getValueAt(selectedIndex, 2).toString();
                 String curHarga = productTable.getModel().getValueAt(selectedIndex, 3).toString();
                 String curKategori = productTable.getModel().getValueAt(selectedIndex, 4).toString();
+                String curKelas = productTable.getModel().getValueAt(selectedIndex, 5).toString();
 
                 // ubah isi textfield dan combo box
                 idField.setText(curId);
                 namaField.setText(curNama);
                 hargaField.setText(curHarga);
                 kategoriComboBox.setSelectedItem(curKategori);
+
+                for (int i = 0; i < kelasData.length; i++) {
+                    if (kelasData[i].matches(curKelas)) {
+                        kelasSlider.setValue(i);
+                    }
+                }
 
                 // ubah button "Add" menjadi "Update"
                 addUpdateButton.setText("Update");
@@ -136,7 +162,7 @@ public class ProductMenu extends JFrame {
 
     public final DefaultTableModel setTable() {
         // tentukan kolom tabel
-        Object[] columns = {"No", "ID Produk", "Nama", "Harga", "Kategori"};
+        Object[] columns = {"No", "ID Produk", "Nama", "Harga", "Kategori", "Kelas"};
 
         // buat objek tabel dengan kolom yang sudah dibuat
         DefaultTableModel tempTable = new DefaultTableModel(null, columns);
@@ -147,7 +173,8 @@ public class ProductMenu extends JFrame {
                     listProduct.get(i).getId(),
                     listProduct.get(i).getNama(),
                     String.format("%.2f", listProduct.get(i).getHarga()),
-                    listProduct.get(i).getKategori()
+                    listProduct.get(i).getKategori(),
+                    listProduct.get(i).getKelas()
             };
             tempTable.addRow(newRow);
         }
@@ -163,9 +190,10 @@ public class ProductMenu extends JFrame {
             String nama = namaField.getText();
             double harga = Double.parseDouble(hargaField.getText());
             String kategori  = kategoriComboBox.getSelectedItem().toString();
+            String kelas = kelasSliderIndicator.getText();
 
             // tambahkan data ke dalam list
-            listProduct.add(new Product(id, nama, harga, kategori));
+            listProduct.add(new Product(id, nama, harga, kategori, kelas));
 
             // update tabel
             productTable.setModel(setTable());
@@ -191,12 +219,14 @@ public class ProductMenu extends JFrame {
             String nama = namaField.getText();
             double harga = Double.parseDouble(hargaField.getText());
             String kategori  = kategoriComboBox.getSelectedItem().toString();
+            String kelas = kelasSliderIndicator.getText();
 
             // ubah data produk di list
             listProduct.get(selectedIndex).setId(id);
             listProduct.get(selectedIndex).setNama(nama);
             listProduct.get(selectedIndex).setHarga(harga);
             listProduct.get(selectedIndex).setKategori(kategori);
+            listProduct.get(selectedIndex).setKelas(kelas);
 
             // update tabel
             productTable.setModel(setTable());
@@ -231,11 +261,12 @@ public class ProductMenu extends JFrame {
     }
 
     public void clearForm() {
-        // kosongkan semua texfield dan combo box
+        // kosongkan semua texfield, combo box, dan slider
         idField.setText("");
         namaField.setText("");
         hargaField.setText("");
         kategoriComboBox.setSelectedIndex(0);
+        kelasSlider.setValue(1);
 
         // ubah button "Update" menjadi "Add"
         addUpdateButton.setText("Add");
@@ -245,25 +276,12 @@ public class ProductMenu extends JFrame {
 
         // ubah selectedIndex menjadi -1 (tidak ada baris yang dipilih)
         selectedIndex = -1;
-
     }
 
-    // panggil prosedur ini untuk mengisi list produk
+    // Isi list produk dengan dummy data
     private void populateList() {
-        listProduct.add(new Product("P001", "Laptop Asus", 8500000.0, "Elektronik"));
-        listProduct.add(new Product("P002", "Mouse Logitech", 350000.0, "Elektronik"));
-        listProduct.add(new Product("P003", "Keyboard Mechanical", 750000.0, "Elektronik"));
-        listProduct.add(new Product("P004", "Roti Tawar", 15000.0, "Makanan"));
-        listProduct.add(new Product("P005", "Susu UHT", 12000.0, "Minuman"));
-        listProduct.add(new Product("P006", "Kemeja Putih", 125000.0, "Pakaian"));
-        listProduct.add(new Product("P007", "Celana Jeans", 200000.0, "Pakaian"));
-        listProduct.add(new Product("P008", "Pensil 2B", 3000.0, "Alat Tulis"));
-        listProduct.add(new Product("P009", "Buku Tulis", 8000.0, "Alat Tulis"));
-        listProduct.add(new Product("P010", "Air Mineral", 5000.0, "Minuman"));
-        listProduct.add(new Product("P011", "Smartphone Samsung", 4500000.0, "Elektronik"));
-        listProduct.add(new Product("P012", "Kue Brownies", 25000.0, "Makanan"));
-        listProduct.add(new Product("P013", "Jaket Hoodie", 180000.0, "Pakaian"));
-        listProduct.add(new Product("P014", "Pulpen Gel", 5000.0, "Alat Tulis"));
-        listProduct.add(new Product("P015", "Teh Botol", 8000.0, "Minuman"));
+        listProduct.add(new Product("P00" + (listProduct.size()+1), "Asus Vivobook", 8500000.0, "Laptop", "Mid-range"));
+        listProduct.add(new Product("P00" + (listProduct.size()+1), "Mouse Logitech M100", 150000.0, "Peripheral", "Low-end"));
+        listProduct.add(new Product("P00" + (listProduct.size()+1), "Keyboard Cherry KMX", 750000.0, "Peripheral", "Mid-range"));
     }
 }

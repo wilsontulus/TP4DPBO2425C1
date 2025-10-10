@@ -3,12 +3,14 @@ public class Product {
     private String nama;
     private double harga;
     private String kategori;
+    private String kelas;
 
-    public Product(String id, String nama, double harga, String kategori) {
+    public Product(String id, String nama, double harga, String kategori, String kelas) {
         this.id = id;
         this.nama = nama;
         this.harga = harga;
         this.kategori = kategori;
+        this.kelas = kelas;
     }
 
     public void setId(String id) {
@@ -27,6 +29,10 @@ public class Product {
         this.kategori = kategori;
     }
 
+    public void setKelas(String kelas) {
+        this.kelas = kelas;
+    }
+
     public String getId() {
         return this.id;
     }
@@ -41,5 +47,9 @@ public class Product {
 
     public String getKategori() {
         return this.kategori;
+    }
+
+    public String getKelas() {
+        return this.kelas;
     }
 }
