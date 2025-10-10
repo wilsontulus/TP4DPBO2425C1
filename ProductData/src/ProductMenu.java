@@ -70,7 +70,7 @@ public class ProductMenu extends JFrame {
         titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 20f));
 
         // Atur isi combo box
-        String[] kategoriData = {"<Pilih kategori>", "Laptop", "PC", "Peripheral", "Aksesoris", "Penyimpanan"};
+        String[] kategoriData = {"<Pilih kategori>", "Laptop", "PC", "Aksesoris", "Komponen", "Peripheral"};
         kategoriComboBox.setModel(new DefaultComboBoxModel<>(kategoriData));
 
         // Atur posisi slider
@@ -145,6 +145,7 @@ public class ProductMenu extends JFrame {
                 hargaField.setText(curHarga);
                 kategoriComboBox.setSelectedItem(curKategori);
 
+                // ubah posisi slider berdasarkan kategori yang ditentukan
                 for (int i = 0; i < kelasData.length; i++) {
                     if (kelasData[i].matches(curKelas)) {
                         kelasSlider.setValue(i);
@@ -281,7 +282,17 @@ public class ProductMenu extends JFrame {
     // Isi list produk dengan dummy data
     private void populateList() {
         listProduct.add(new Product("P00" + (listProduct.size()+1), "Asus Vivobook", 8500000.0, "Laptop", "Mid-range"));
-        listProduct.add(new Product("P00" + (listProduct.size()+1), "Mouse Logitech M100", 150000.0, "Peripheral", "Low-end"));
+        listProduct.add(new Product("P00" + (listProduct.size()+1), "Mouse Logy M100", 150000.0, "Peripheral", "Low-end"));
         listProduct.add(new Product("P00" + (listProduct.size()+1), "Keyboard Cherry KMX", 750000.0, "Peripheral", "Mid-range"));
+        listProduct.add(new Product("P00" + (listProduct.size()+1), "Samsung 990 Pro 2TB", 4585000.0, "Komponen", "High-end"));
+        listProduct.add(new Product("P00" + (listProduct.size()+1), "HP Tower PC 400S", 14505000.0, "PC", "High-end"));
+        listProduct.add(new Product("P00" + (listProduct.size()+1), "ePC ae300cx-t", 6850000.0, "PC", "Mid-range"));
+        listProduct.add(new Product("P00" + (listProduct.size()+1), "Logy G900 Keyboard", 4110000.0, "Peripheral", "High-end"));
+        listProduct.add(new Product("P00" + (listProduct.size()+1), "Aproo EXT 16GB DDR4", 1970000.0, "Komponen", "Mid-range"));
+        listProduct.add(new Product("P00" + (listProduct.size()+1), "Tell Genium g440", 650000.0, "Komponen", "Low-end"));
+        listProduct.add(new Product("P00" + (listProduct.size()+1), "PreBoard B650m H1", 2150000.0, "Motherboard", "Mid-range"));
+        listProduct.add(new Product("P00" + (listProduct.size()+1), "GreyFast 120mm 4000RPM RainLED", 355000.0, "Komponen", "Mid-range"));
+        listProduct.add(new Product("P00" + (listProduct.size()+1), "Zen 5 5600GE", 2195000.0, "Komponen", "Mid-range"));
+        listProduct.add(new Product("P00" + (listProduct.size()+1), "GreeNium WayGo A10", 195000.0, "Aksesoris", "Low-end"));
     }
 }
