@@ -21,21 +21,23 @@ public class ProductMenu extends JFrame {
         // Isikan window
         menu.setContentPane(menu.mainPanel);
 
-        // ubah warna background
+        // Ubah warna background
         menu.getContentPane().setBackground(Color.WHITE);
 
-        // tampilkan window
+        // Tampilkan window
         menu.setVisible(true);
 
-        // agar program ikut berhenti saat window diclose
+        // Ubah default agar program ikut berhenti saat window diclose
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    // index baris yang diklik
+    // Deklarasi index baris yang diklik
     private int selectedIndex = -1;
-    // list untuk menampung semua produk
+
+    // Deklarasi arraylist untuk menampung semua produk
     private ArrayList<Product> listProduct;
 
+    // Deklarasi variabel panel
     private JPanel mainPanel;
     private JTextField idField;
     private JTextField namaField;
@@ -51,7 +53,7 @@ public class ProductMenu extends JFrame {
     private JLabel hargaLabel;
     private JLabel kategoriLabel;
 
-    // constructor
+    // Deklarasi constructor
     public ProductMenu() {
         // inisialisasi listProduct
         listProduct = new ArrayList<>();
@@ -87,11 +89,11 @@ public class ProductMenu extends JFrame {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO: tambahkan konfirmasi sebelum menghapus data
+                // Tampilkan pop-up konfirmasi penghapusan data (variabel integer)
                 int confirmResult = JOptionPane.showConfirmDialog(null, "Apakah Anda yakin untuk menghapus data?",
                         "Konfirmasi Hapus Data", JOptionPane.YES_NO_OPTION);
 
-                // jika confirmResult 0, berarti pengguna mengklik Yes
+                // jika variabel confirmResult 0, berarti pengguna mengklik Yes (1 berarti No)
                 if (confirmResult == 0) {
                     deleteData();
                 }
@@ -128,7 +130,6 @@ public class ProductMenu extends JFrame {
 
                 // tampilkan button delete
                 deleteButton.setVisible(true);
-
             }
         });
     }
@@ -169,7 +170,7 @@ public class ProductMenu extends JFrame {
             // update tabel
             productTable.setModel(setTable());
 
-            // bersihkan form
+            // Bersihkan form
             clearForm();
 
             // feedback
